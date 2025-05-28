@@ -12,6 +12,12 @@ interface TelegramPost {
     image: string;
     url: string;
   };
+  vk_preview?: {
+    title: string;
+    description: string;
+    image: string;
+    url: string;
+  };
 }
 
 const API_URL = 'https://telegram-widget-backend.onrender.com/api/telegram';
@@ -69,7 +75,7 @@ const TelegramFeedWidget: React.FC = () => {
           <div className="text-nature-green-800 text-base whitespace-pre-line leading-relaxed">
             {post.text}
           </div>
-          {/* Превью ссылки */}
+          {/* Превью ссылки Telegram (preview) */}
           {post.preview && (
             <a
               href={post.preview.url}
@@ -92,6 +98,37 @@ const TelegramFeedWidget: React.FC = () => {
                   </div>
                   <div className="text-xs text-nature-gold-600 mt-1 line-clamp-1">
                     {post.preview.url}
+                  </div>
+                </div>
+              </div>
+            </a>
+          )}
+          {/* Превью ссылки ВК (vk_preview) */}
+          {post.vk_preview && post.vk_preview.url && (
+            <a
+              href={post.vk_preview.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block border border-nature-green-300 rounded-lg overflow-hidden mt-2 hover:shadow-lg transition-shadow bg-nature-green-50"
+            >
+              <div className="flex">
+                {post.vk_preview.image && (
+                  <img
+                    src={post.vk_preview.image}
+                    alt={post.vk_preview.title}
+                    className="w-20 h-20 object-cover flex-shrink-0 bg-gray-100"
+                  />
+                )}
+                <div className="p-2 flex-1">
+                  <div className="font-semibold text-nature-green-800 mb-1 line-clamp-1 flex items-center gap-2">
+                    <svg className="w-5 h-5 text-[#4C75A3] flex-shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M15.684 0H8.316C1.592 0 0 1.592 0 8.316v7.368C0 22.408 1.592 24 8.316 24h7.368C22.408 24 24 22.408 24 15.684V8.316C24 1.592 22.408 0 15.684 0zm3.692 17.123h-1.744c-.66 0-.864-.525-2.05-1.727-1.033-1.01-1.49-.9-1.49.114v1.496c0 .4-.129.643-1.188.643-1.922 0-4.054-1.16-5.565-3.334-2.305-3.35-2.936-5.835-2.936-6.371 0-.24.097-.463.324-.463h1.744c.24 0 .33.1.423.33.972 2.652 2.608 4.966 3.28 4.966.255 0 .372-.117.372-.76v-2.914c-.07-1.186-.695-1.287-.695-1.71 0-.2.16-.4.42-.4h2.742c.203 0 .28.106.28.424v3.917c0 .204.093.285.15.285.255 0 .47-.117 1.147-.781 1.112-1.085 1.908-2.742 1.908-2.742.106-.22.27-.43.556-.43h1.744c.66 0 .8.34.66.8-.445 1.118-2.936 4.125-2.936 4.125-.18.22-.125.32 0 .525.093.14 1.017 1.003 1.5 1.608.24.304.378.604.123.804z"/></svg>
+                    {post.vk_preview.title || 'Ссылка ВКонтакте'}
+                  </div>
+                  <div className="text-sm text-nature-green-600 line-clamp-2">
+                    {post.vk_preview.description}
+                  </div>
+                  <div className="text-xs text-blue-700 mt-1 line-clamp-1 underline">
+                    {post.vk_preview.url}
                   </div>
                 </div>
               </div>
