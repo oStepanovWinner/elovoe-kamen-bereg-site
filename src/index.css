@@ -1,0 +1,123 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 255 255 255;
+    --foreground: 44 82 52;
+
+    --card: 255 255 255;
+    --card-foreground: 44 82 52;
+
+    --popover: 255 255 255;
+    --popover-foreground: 44 82 52;
+
+    --primary: 45 154 91;
+    --primary-foreground: 255 255 255;
+
+    --secondary: 240 249 244;
+    --secondary-foreground: 44 82 52;
+
+    --muted: 240 249 244;
+    --muted-foreground: 117 125 117;
+
+    --accent: 45 154 91;
+    --accent-foreground: 255 255 255;
+
+    --destructive: 220 38 38;
+    --destructive-foreground: 255 255 255;
+
+    --border: 220 220 220;
+    --input: 220 220 220;
+    --ring: 45 154 91;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 255 255 255;
+    --sidebar-foreground: 44 82 52;
+    --sidebar-primary: 45 154 91;
+    --sidebar-primary-foreground: 255 255 255;
+    --sidebar-accent: 240 249 244;
+    --sidebar-accent-foreground: 44 82 52;
+    --sidebar-border: 220 220 220;
+    --sidebar-ring: 45 154 91;
+  }
+
+  .dark {
+    --background: 23 37 42;
+    --foreground: 240 249 244;
+
+    --card: 23 37 42;
+    --card-foreground: 240 249 244;
+
+    --popover: 23 37 42;
+    --popover-foreground: 240 249 244;
+
+    --primary: 45 154 91;
+    --primary-foreground: 255 255 255;
+
+    --secondary: 44 82 52;
+    --secondary-foreground: 240 249 244;
+
+    --muted: 44 82 52;
+    --muted-foreground: 156 163 175;
+
+    --accent: 45 154 91;
+    --accent-foreground: 23 37 42;
+
+    --destructive: 220 38 38;
+    --destructive-foreground: 240 249 244;
+
+    --border: 44 82 52;
+    --input: 44 82 52;
+    --ring: 45 154 91;
+
+    --sidebar-background: 23 37 42;
+    --sidebar-foreground: 240 249 244;
+    --sidebar-primary: 45 154 91;
+    --sidebar-primary-foreground: 255 255 255;
+    --sidebar-accent: 44 82 52;
+    --sidebar-accent-foreground: 240 249 244;
+    --sidebar-border: 44 82 52;
+    --sidebar-ring: 45 154 91;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-white text-foreground font-inter;
+    scroll-behavior: smooth;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+  }
+
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+  }
+
+  /* Ensure no element causes horizontal overflow */
+  body, html, #root {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+}
+
+@layer components {
+  .section-padding {
+    @apply px-4 sm:px-6 lg:px-8 py-16 lg:py-24;
+  }
+
+  .nature-gradient {
+    background: linear-gradient(135deg, #f0f9f4 0%, #dcf2e4 50%, #bbe5cd 100%);
+  }
+
+  .forest-gradient {
+    background: linear-gradient(180deg, rgba(45, 154, 91, 0.1) 0%, rgba(240, 249, 244, 0.8) 100%);
+  }
+}
