@@ -44,6 +44,24 @@ function linkify(text: string) {
   );
 }
 
+// Функция для автолинковки ссылок и доменов в описании из ВК
+function linkifyDescription(text: string) {
+  // Заменяем <br> на \n
+  let result = text.replace(/<br\s*\/?\s*>/gi, '\n');
+  // Ищем ссылки с http/https и домены без протокола
+  result = result.replace(
+    /(https?:\/\/[\w\-\.\/?#&=;%:]+)|(\b[\w\-\.]+\.(ru|com|net|org|by|ua|kz|su)\b)/gi,
+    (match) => {
+      let url = match;
+      if (!/^https?:\/\//i.test(url)) {
+        url = 'https://' + url;
+      }
+      return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-blue-700 underline">${match}</a>`;
+    }
+  );
+  return result;
+}
+
 const fetcher = (url: string) => fetch(url).then(res => res.json());
 
 const TelegramFeedWidget: React.FC = () => {
@@ -117,6 +135,19 @@ const TelegramFeedWidget: React.FC = () => {
             <div className="font-bold text-lg text-orange-400 bg-nature-gold-50 rounded-t-xl px-3 py-2 -mx-4 -mt-3 mb-1 tracking-tight">
               {GROUP_NAME}
             </div>
+            {/* Ссылка на ВК (если есть) — вверху */}
+            {vkUrl && (
+              <div className="mb-1">
+                <a
+                  href={vkUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-700 underline font-medium text-sm hover:text-blue-800 transition break-all"
+                >
+                  {vkUrl}
+                </a>
+              </div>
+            )}
             {/* Текст поста (без ссылки на ВК) */}
             {text && (
               <div className="text-nature-green-700 text-base whitespace-pre-line leading-relaxed">
@@ -138,22 +169,10 @@ const TelegramFeedWidget: React.FC = () => {
             )}
             {/* Описание из ВК (если есть) */}
             {description && (
-              <div className="text-nature-green-700 text-base whitespace-pre-line leading-relaxed mb-2">
-                {description}
-              </div>
-            )}
-            {/* Ссылка на ВК (если есть) */}
-            {vkUrl && (
-              <div className="mb-1">
-                <a
-                  href={vkUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block px-3 py-2 rounded-lg bg-nature-green-50 text-blue-700 font-semibold underline hover:bg-blue-800 transition break-all shadow-sm"
-                >
-                  {vkUrl}
-                </a>
-              </div>
+              <div
+                className="text-nature-green-700 text-base whitespace-pre-line leading-relaxed mb-2"
+                dangerouslySetInnerHTML={{ __html: linkifyDescription(description) }}
+              />
             )}
             {/* Дата */}
             <div className="text-xs text-nature-green-400 mt-2 text-right select-none">
