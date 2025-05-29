@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import useSWR, { mutate } from 'swr';
 
 interface TelegramPost {
   id: number;
@@ -43,30 +44,46 @@ function linkify(text: string) {
   );
 }
 
+const fetcher = (url: string) => fetch(url).then(res => res.json());
+
 const TelegramFeedWidget: React.FC = () => {
-  const [posts, setPosts] = useState<TelegramPost[]>([]);
-  const [loading, setLoading] = useState(true);
   const feedRef = useRef<HTMLDivElement>(null);
+  const { data: posts, isLoading } = useSWR(API_URL, fetcher, {
+    dedupingInterval: 60 * 60 * 1000, // 1 час
+    revalidateOnFocus: false,
+  });
   const [modalPhoto, setModalPhoto] = useState<string | null>(null);
+  const [showRefresh, setShowRefresh] = useState(false);
 
   useEffect(() => {
-    fetch(API_URL)
-      .then(res => res.json())
-      .then(data => {
-        setPosts(data);
-        setLoading(false);
-        setTimeout(() => {
-          if (feedRef.current) {
-            feedRef.current.scrollTop = feedRef.current.scrollHeight;
-          }
-        }, 100);
-      });
-  }, []);
+    if (!isLoading && feedRef.current) {
+      setTimeout(() => {
+        feedRef.current!.scrollTop = feedRef.current!.scrollHeight;
+      }, 100);
+    }
+  }, [isLoading]);
 
-  if (loading) {
+  useEffect(() => {
+    if (isLoading) {
+      const timer = setTimeout(() => setShowRefresh(true), 3000);
+      return () => clearTimeout(timer);
+    } else {
+      setShowRefresh(false);
+    }
+  }, [isLoading]);
+
+  if (isLoading || !posts) {
     return (
-      <div className="flex items-center justify-center w-full h-full">
+      <div className="flex flex-col items-center justify-center w-full h-full gap-4">
         <span className="text-nature-green-600">Загрузка...</span>
+        {showRefresh && (
+          <button
+            onClick={() => mutate(API_URL)}
+            className="px-4 py-2 rounded-lg bg-nature-green-600 text-white font-semibold hover:bg-nature-green-700 transition shadow"
+          >
+            Обновить
+          </button>
+        )}
       </div>
     );
   }
@@ -78,15 +95,18 @@ const TelegramFeedWidget: React.FC = () => {
       style={{ boxShadow: '0 4px 32px 0 rgba(45,154,91,0.08)' }}
     >
       {posts.map(post => {
-        // Определяем, есть ли ссылка в тексте
-        const urlRegex = /(https?:\/\/[^\s]+)/g;
-        const firstUrlMatch = post.text.match(urlRegex);
-        const firstUrl = firstUrlMatch ? firstUrlMatch[0] : null;
-        // Удаляем первую ссылку из текста для отображения без дублирования
-        let textWithoutFirstUrl = post.text;
-        if (firstUrl) {
-          textWithoutFirstUrl = post.text.replace(firstUrl, '').replace(/^\s+|\s+$/g, '');
+        // Определяем, есть ли валидный vk_preview
+        const hasVk = post.vk_preview && (post.vk_preview.image || post.vk_preview.description);
+        const image = hasVk && post.vk_preview.image ? post.vk_preview.image : post.photo;
+        const description = hasVk ? post.vk_preview.description : null;
+        const vkUrl = hasVk ? post.vk_preview.url : null;
+        // Удаляем ссылку на ВК из текста, если она есть
+        let text = post.text;
+        if (vkUrl) {
+          text = text.replace(vkUrl, '').replace(/^\s+|\s+$/g, '');
         }
+        // Не рендерим пустые посты
+        if (!text && !image && !description) return null;
         return (
           <div
             key={post.id}
@@ -97,93 +117,43 @@ const TelegramFeedWidget: React.FC = () => {
             <div className="font-bold text-lg text-orange-400 bg-nature-gold-50 rounded-t-xl px-3 py-2 -mx-4 -mt-3 mb-1 tracking-tight">
               {GROUP_NAME}
             </div>
-            {/* Ссылка (если есть) */}
-            {firstUrl && (
-              <div className="mb-1">
-                <a
-                  href={firstUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block px-3 py-2 rounded-lg bg-nature-green-50 text-nature-green-700 font-semibold underline hover:bg-nature-green-100 hover:text-nature-green-800 transition break-all shadow-sm"
-                >
-                  {firstUrl}
-                </a>
+            {/* Текст поста (без ссылки на ВК) */}
+            {text && (
+              <div className="text-nature-green-700 text-base whitespace-pre-line leading-relaxed">
+                {linkify(text)}
               </div>
             )}
-            {/* Фото поста */}
-            {post.photo && (
+            {/* Фото (из ВК превью или из ТГ) */}
+            {image && (
               <div className="mb-2 rounded-lg overflow-hidden flex items-center justify-center bg-nature-green-50 cursor-zoom-in"
-                   onClick={() => setModalPhoto(post.photo)}>
+                   onClick={() => setModalPhoto(image)}>
                 <img
-                  src={post.photo}
+                  src={image}
                   alt="media"
+                  loading="lazy"
                   className="object-contain w-full max-w-full max-h-96 transition-transform duration-200 hover:scale-105"
                   style={{ borderRadius: '0.75rem' }}
                 />
               </div>
             )}
-            {/* Текст поста */}
-            <div className="text-nature-green-700 text-base whitespace-pre-line leading-relaxed">
-              {linkify(textWithoutFirstUrl)}
-            </div>
-            {/* Превью ссылки Telegram (preview) */}
-            {post.preview && (
-              <a
-                href={post.preview.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block border border-nature-green-200 rounded-lg overflow-hidden mt-2 hover:shadow-lg transition-shadow bg-nature-green-50"
-              >
-                <div className="flex">
-                  <img
-                    src={post.preview.image}
-                    alt={post.preview.title}
-                    className="w-20 h-20 object-cover flex-shrink-0"
-                  />
-                  <div className="p-2 flex-1">
-                    <div className="font-semibold text-nature-green-800 mb-1 line-clamp-1">
-                      {post.preview.title}
-                    </div>
-                    <div className="text-sm text-nature-green-600 line-clamp-2">
-                      {post.preview.description}
-                    </div>
-                    <div className="text-xs text-nature-gold-600 mt-1 line-clamp-1">
-                      {post.preview.url}
-                    </div>
-                  </div>
-                </div>
-              </a>
+            {/* Описание из ВК (если есть) */}
+            {description && (
+              <div className="text-nature-green-700 text-base whitespace-pre-line leading-relaxed mb-2">
+                {description}
+              </div>
             )}
-            {/* Превью ссылки ВК (vk_preview) */}
-            {post.vk_preview && post.vk_preview.url && (
-              <a
-                href={post.vk_preview.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block border border-nature-green-300 rounded-lg overflow-hidden mt-2 hover:shadow-lg transition-shadow bg-nature-green-50"
-              >
-                <div className="flex">
-                  {post.vk_preview.image && (
-                    <img
-                      src={post.vk_preview.image}
-                      alt={post.vk_preview.title}
-                      className="w-20 h-20 object-cover flex-shrink-0 bg-gray-100"
-                    />
-                  )}
-                  <div className="p-2 flex-1">
-                    <div className="font-semibold text-nature-green-800 mb-1 line-clamp-1 flex items-center gap-2">
-                      <svg className="w-5 h-5 text-[#4C75A3] flex-shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M15.684 0H8.316C1.592 0 0 1.592 0 8.316v7.368C0 22.408 1.592 24 8.316 24h7.368C22.408 24 24 22.408 24 15.684V8.316C24 1.592 22.408 0 15.684 0zm3.692 17.123h-1.744c-.66 0-.864-.525-2.05-1.727-1.033-1.01-1.49-.9-1.49.114v1.496c0 .4-.129.643-1.188.643-1.922 0-4.054-1.16-5.565-3.334-2.305-3.35-2.936-5.835-2.936-6.371 0-.24.097-.463.324-.463h1.744c.24 0 .33.1.423.33.972 2.652 2.608 4.966 3.28 4.966.255 0 .372-.117.372-.76v-2.914c-.07-1.186-.695-1.287-.695-1.71 0-.2.16-.4.42-.4h2.742c.203 0 .28.106.28.424v3.917c0 .204.093.285.15.285.255 0 .47-.117 1.147-.781 1.112-1.085 1.908-2.742 1.908-2.742.106-.22.27-.43.556-.43h1.744c.66 0 .8.34.66.8-.445 1.118-2.936 4.125-2.936 4.125-.18.22-.125.32 0 .525.093.14 1.017 1.003 1.5 1.608.24.304.378.604.123.804z"/></svg>
-                      {post.vk_preview.title || 'Ссылка ВКонтакте'}
-                    </div>
-                    <div className="text-sm text-nature-green-600 line-clamp-2">
-                      {post.vk_preview.description}
-                    </div>
-                    <div className="text-xs text-blue-700 mt-1 line-clamp-1 underline">
-                      {post.vk_preview.url}
-                    </div>
-                  </div>
-                </div>
-              </a>
+            {/* Ссылка на ВК (если есть) */}
+            {vkUrl && (
+              <div className="mb-1">
+                <a
+                  href={vkUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block px-3 py-2 rounded-lg bg-nature-green-50 text-blue-700 font-semibold underline hover:bg-blue-800 transition break-all shadow-sm"
+                >
+                  {vkUrl}
+                </a>
+              </div>
             )}
             {/* Дата */}
             <div className="text-xs text-nature-green-400 mt-2 text-right select-none">
@@ -205,6 +175,7 @@ const TelegramFeedWidget: React.FC = () => {
             <img
               src={modalPhoto}
               alt="Увеличенное фото"
+              loading="lazy"
               className="max-h-[90vh] max-w-full rounded-2xl shadow-2xl border-4 border-white"
             />
             <button
