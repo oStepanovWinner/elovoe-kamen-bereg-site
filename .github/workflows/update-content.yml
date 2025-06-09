@@ -39,4 +39,6 @@ jobs:
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add public/
           git diff --cached --quiet || git commit -m 'auto: update content from Google Sheets/Docs'
-          git push
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/oStepanovWinner/elovoe-kamen-bereg-site.git HEAD:main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
