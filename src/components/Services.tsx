@@ -162,13 +162,13 @@ const Services = () => {
                       <div className="h-24 flex items-start text-nature-green-600 leading-relaxed mb-6">{service.description}</div>
                       <div className="h-6 flex items-center text-sm font-semibold text-nature-green-700 uppercase tracking-wider mb-2">Включено:</div>
                       <ul className="pl-4 grid grid-cols-2 gap-x-4 gap-y-3 text-sm text-nature-green-600 mt-2">
-                        {service.features.map((feature, index) => (
+                          {service.features.map((feature, index) => (
                           <li key={index} className="flex items-center h-8">
-                            <div className="w-1.5 h-1.5 bg-nature-gold-500 rounded-full mr-2"></div>
-                            {feature}
-                          </li>
-                        ))}
-                      </ul>
+                              <div className="w-1.5 h-1.5 bg-nature-gold-500 rounded-full mr-2"></div>
+                              {feature}
+                            </li>
+                          ))}
+                        </ul>
                     </div>
                   </div>
                 </div>

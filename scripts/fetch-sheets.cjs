@@ -1,7 +1,11 @@
 const fs = require('fs');
 
 const SPREADSHEET_ID = '1du_Awg8Iigq_MAI-3dpqhMgI2l10zCii_-pdn69iLJ8'; // твой ID
-const API_KEY = 'AIzaSyAgG-4mH_tfoeutSPS93M3zAWGQABdHwIY'; // замени на свой ключ
+const API_KEY = process.env.GOOGLE_API_KEY;
+if (!API_KEY) {
+  console.error('ERROR: GOOGLE_API_KEY is not set!');
+  process.exit(1);
+}
 
 const sheets = [
   { name: 'Gallery', file: 'gallery.json' },

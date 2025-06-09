@@ -92,7 +92,7 @@ const TelegramFeedWidget: React.FC = () => {
     }
   }, [isLoading]);
 
-  if (isLoading) {
+    if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center w-full h-full gap-4">
         <span className="text-nature-green-600">Загрузка...</span>

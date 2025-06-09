@@ -32,8 +32,8 @@ const Gallery = () => {
       });
   }, []);
 
-  const filteredImages = activeCategory === 'Все'
-    ? galleryImages
+  const filteredImages = activeCategory === 'Все' 
+    ? galleryImages 
     : galleryImages.filter(img => img.category === activeCategory);
 
   useEffect(() => {
