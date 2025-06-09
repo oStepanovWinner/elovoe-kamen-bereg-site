@@ -38,5 +38,21 @@
     "price": "Бесплатно",
     "features": "\"Лягушатник\"",
     "image_url": "https://i.imgur.com/xBgRpcI.png"
+  },
+  {
+    "id": "6",
+    "name": "Понтонный пирс",
+    "description": "Просто описание",
+    "price": "Бесплатно",
+    "features": "\"Лягушатник\"",
+    "image_url": "https://i.imgur.com/xBgRpcI.png"
+  },
+  {
+    "id": "7",
+    "name": "Понтонный пирс",
+    "description": "Просто описание",
+    "price": "Бесплатно",
+    "features": "\"Лягушатник\"",
+    "image_url": "https://i.imgur.com/xBgRpcI.png"
   }
 ]
