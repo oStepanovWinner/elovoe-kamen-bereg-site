@@ -30,16 +30,13 @@ const Footer = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Логотип и описание */}
             <div className="lg:col-span-2">
-              <div className="flex items-center space-x-3 mb-6">
+              <div className="flex items-center mb-6">
                 <div className="flex items-end justify-center">
                   <div className="relative">
-                    {/* Большая крыша */}
-                    <div className="w-0 h-0 border-l-[16px] border-r-[16px] border-b-[12px] border-transparent border-b-nature-green-500"></div>
-                    {/* Дом */}
-                    <div className="w-8 h-6 bg-nature-green-600 mx-auto"></div>
+                    <img src="/logo.svg" alt="Каменный берег" className="w-[45px] h-[45px]" />
                   </div>
                 </div>
-                <div className="text-xl font-semibold">Каменный берег</div>
+                <div className="text-xl font-semibold ml-4">Каменный берег</div>
               </div>
               <p className="text-nature-green-200 mb-6 leading-relaxed">
                 Уютная база отдыха на берегу чистого озера в живописном уголке озера Еловое. 

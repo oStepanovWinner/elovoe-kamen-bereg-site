@@ -1,3 +1,5 @@
+
+require('dotenv').config();
 const fs = require('fs');
 
 const SPREADSHEET_ID = '1du_Awg8Iigq_MAI-3dpqhMgI2l10zCii_-pdn69iLJ8'; // твой ID

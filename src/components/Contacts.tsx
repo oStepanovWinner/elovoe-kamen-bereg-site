@@ -112,9 +112,7 @@ const Contacts = () => {
                   <h3 className="text-2xl font-bold text-nature-green-800">
                     Бронирование
                   </h3>
-                  <BookingForm trigger={<Button className="bg-nature-gold-500 hover:bg-nature-green-600 text-nature-green-800 font-semibold px-6 py-2">
-                      Забронировать
-                    </Button>} />
+                  <BookingForm trigger={<Button className="bg-nature-gold-500 hover:bg-nature-gold-600 text-nature-green-800 font-semibold px-6 py-2">Забронировать</Button>} />
                 </div>
                 <div className="space-y-4 text-nature-green-700">
                   <p className="text-lg leading-relaxed">

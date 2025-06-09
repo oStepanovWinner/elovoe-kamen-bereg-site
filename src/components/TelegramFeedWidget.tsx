@@ -85,12 +85,12 @@ const TelegramFeedWidget: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!isLoading && feedRef.current) {
+    if (feedRef.current) {
       setTimeout(() => {
-        feedRef.current!.scrollTop = feedRef.current!.scrollHeight;
-      }, 100);
+        feedRef.current.scrollTop = feedRef.current.scrollHeight;
+      }, 300);
     }
-  }, [isLoading]);
+  }, [posts]);
 
     if (isLoading) {
     return (

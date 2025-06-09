@@ -57,16 +57,13 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Логотип */}
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center">
             <div className="flex items-end justify-center">
               <div className="relative">
-                {/* Большая крыша */}
-                <div className="w-0 h-0 border-l-[16px] border-r-[16px] border-b-[12px] border-transparent border-b-nature-green-500"></div>
-                {/* Дом */}
-                <div className="w-8 h-6 bg-nature-green-600 mx-auto"></div>
+                <img src="/logo.svg" alt="Каменный берег" className="w-[45px] h-[45px]" />
               </div>
             </div>
-            <div className="text-lg lg:text-xl font-semibold text-nature-green-800">
+            <div className="text-lg lg:text-xl font-semibold text-nature-green-800 ml-4">
               Каменный берег
             </div>
           </div>
@@ -92,10 +89,7 @@ const Header = () => {
           <div className="hidden lg:block">
             <Button 
               onClick={() => scrollToSection('contacts')}
-              className="bg-nature-gold-500 hover:bg-nature-gold-600 text-nature-green-800 font-medium px-4 xl:px-6 py-2 text-sm xl:text-base
-              shadow-[0_4px_12px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_16px_rgba(0,0,0,0.2)]
-              transform hover:scale-105 active:scale-95
-              transition-all duration-200 ease-in-out"
+              className="bg-nature-gold-500 hover:bg-nature-gold-600 text-nature-green-800 font-medium px-4 xl:px-6 py-2 text-sm xl:text-base shadow-[0_4px_12px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_16px_rgba(0,0,0,0.2)] transform hover:scale-105 active:scale-95 transition-all duration-200 ease-in-out"
             >
               Забронировать
             </Button>
@@ -140,10 +134,7 @@ const Header = () => {
               <div className="px-4 pt-2">
                 <Button 
                   onClick={() => scrollToSection('contacts')}
-                  className="w-full bg-nature-gold-500 hover:bg-nature-gold-600 text-nature-green-800 font-medium
-                  shadow-[0_4px_12px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_16px_rgba(0,0,0,0.2)]
-                  transform hover:scale-105 active:scale-95
-                  transition-all duration-200 ease-in-out"
+                  className="w-full bg-nature-gold-500 hover:bg-nature-gold-600 text-nature-green-800 font-medium shadow-[0_4px_12px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_16px_rgba(0,0,0,0.2)] transform hover:scale-105 active:scale-95 transition-all duration-200 ease-in-out"
                 >
                   Забронировать
                 </Button>

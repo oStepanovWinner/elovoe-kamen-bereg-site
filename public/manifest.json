@@ -1,0 +1,26 @@
+{
+  "name": "Каменный берег — база отдыха на природе",
+  "short_name": "Каменный берег",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f0f9f4",
+  "theme_color": "#2d9a5b",
+  "description": "База отдыха Каменный берег — уютные номера, природа, рыбалка, отдых для всей семьи в Тверской области.",
+  "icons": [
+    {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+} 

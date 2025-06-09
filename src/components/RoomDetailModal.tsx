@@ -101,12 +101,7 @@ const RoomDetailModal: React.FC<RoomDetailModalProps> = ({ room, isOpen, onClose
           <div className="flex flex-col sm:flex-row gap-4 sticky bottom-0 bg-white p-4 border-t border-gray-100">
             <Button
               onClick={onBook}
-              className="flex-1 bg-nature-gold-500 hover:bg-nature-gold-600 text-nature-green-800 \
-              font-medium py-3 rounded-xl
-              shadow-[0_4px_12px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_16px_rgba(0,0,0,0.2)]
-              transform hover:scale-102 active:scale-98
-              transition-all duration-200 ease-in-out
-              sm:order-1"
+              className="flex-1 bg-primary hover:bg-primary/90 text-white font-medium py-3 rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_16px_rgba(0,0,0,0.2)] transform hover:scale-102 active:scale-98 transition-all duration-200 ease-in-out sm:order-1"
             >
               Забронировать номер
             </Button>
