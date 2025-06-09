@@ -25,9 +25,13 @@ jobs:
 
       - name: Запустить fetch-sheets
         run: node scripts/fetch-sheets.cjs
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
 
       - name: Запустить fetch-docs
         run: node scripts/fetch-docs.cjs
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
 
       - name: Проверить изменения и закоммитить
         run: |
