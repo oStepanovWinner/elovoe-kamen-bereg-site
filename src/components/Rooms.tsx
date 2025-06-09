@@ -6,7 +6,7 @@ import useEmblaCarousel from 'embla-carousel-react';
 
 // Добавляю интерфейс Room
 interface Room {
-  id: number;
+  id: string;
   name: string;
   price: string;
   capacity: string;
@@ -28,58 +28,29 @@ const Rooms = () => {
   });
   const [currentSlide, setCurrentSlide] = useState(0);
   const [slidesPerView, setSlidesPerView] = useState(1);
+  const [rooms, setRooms] = useState<Room[]>([]);
 
   // Touch/swipe state with improved sensitivity
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
 
-  const rooms = [
-    {
-      id: 1,
-      name: 'Эконом',
-      price: '1800 ₽/сутки',
-      capacity: '2 человека',
-      features: ['Односпальные кровати', 'Общая ванная', 'Холодильник', 'Wi-Fi'],
-      image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      description: 'Уютный номер эконом-класса с базовыми удобствами для комфортного проживания.'
-    },
-    {
-      id: 2,
-      name: 'Стандарт',
-      price: '2500 ₽/сутки',
-      capacity: '2 человека',
-      features: ['Двуспальная кровать', 'Душевая кабина', 'Мини-холодильник', 'Wi-Fi'],
-      image: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      description: 'Комфортабельный номер стандарт с современными удобствами.'
-    },
-    {
-      id: 3,
-      name: 'Комфорт',
-      price: '3500 ₽/сутки',
-      capacity: '3 человека',
-      features: ['Двуспальная кровать', 'Дополнительное место', 'Полноценная ванная', 'Телевизор', 'Кондиционер'],
-      image: 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      description: 'Просторный номер повышенной комфортности с дополнительными удобствами.'
-    },
-    {
-      id: 4,
-      name: 'Семейный',
-      price: '4500 ₽/сутки',
-      capacity: '4-5 человек',
-      features: ['Две спальни', 'Гостиная', 'Кухонная зона', 'Терраса', 'Барбекю'],
-      image: 'https://images.unsplash.com/photo-1566665797739-1674de7a421a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      description: 'Идеальный номер для семейного отдыха с отдельными зонами и террасой.'
-    },
-    {
-      id: 5,
-      name: 'Люкс',
-      price: '6500 ₽/сутки',
-      capacity: '2 человека',
-      features: ['Панорамные окна', 'Джакузи', 'Мини-бар', 'Балкон с видом на озеро'],
-      image: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      description: 'Роскошный номер люкс с панорамным видом на озеро и эксклюзивными удобствами.'
-    }
-  ];
+  useEffect(() => {
+    fetch('/rooms.json')
+      .then(res => res.json())
+      .then((data: any[]) => {
+        setRooms(data.map(room => ({
+          id: room.id,
+          name: room.name,
+          price: room.price,
+          capacity: room.capacity,
+          features: Array.isArray(room.features)
+            ? room.features
+            : (room.features ? room.features.split(',').map((f: string) => f.trim()) : []),
+          image: room.image_url,
+          description: room.description
+        })));
+      });
+  }, []);
 
   // Calculate slides per view based on screen size
   useEffect(() => {

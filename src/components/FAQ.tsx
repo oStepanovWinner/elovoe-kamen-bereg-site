@@ -1,63 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Phone, Mail, MessageCircle } from 'lucide-react';
 
+interface FAQItem {
+  id: string;
+  question: string;
+  answer: string;
+}
+
 const FAQ = () => {
-  const [openFAQ, setOpenFAQ] = useState<number | null>(null);
+  const [openFAQ, setOpenFAQ] = useState<string | null>(null);
+  const [faqData, setFaqData] = useState<FAQItem[]>([]);
+  const [contacts, setContacts] = useState<Record<string, string>>({});
 
-  const faqData = [
-    {
-      id: 1,
-      question: 'Как забронировать номер?',
-      answer: 'Вы можете забронировать номер несколькими способами: через форму на сайте, по телефону +7 (495) 123-45-67, через наш Telegram-бот или по электронной почте. Мы работаем ежедневно с 9:00 до 21:00.'
-    },
-    {
-      id: 2,
-      question: 'Какие способы оплаты вы принимаете?',
-      answer: 'Мы принимаем оплату наличными при заезде, банковскими картами, переводом на карту или расчетный счет. Предоплата составляет 30% от стоимости проживания, остальную сумму можно доплатить при заезде.'
-    },
-    {
-      id: 3,
-      question: 'Можно ли приехать с домашними животными?',
-      answer: 'Да, мы рады гостям с домашними животными! При бронировании обязательно укажите, что планируете приехать с питомцем. Доплата составляет 500 рублей в сутки. Животное должно быть привито и иметь ветеринарный паспорт.'
-    },
-    {
-      id: 4,
-      question: 'Есть ли Wi-Fi на территории?',
-      answer: 'Да, бесплатный Wi-Fi доступен во всех номерах и на общих территориях базы отдыха. Скорость интернета достаточна для работы и видеосвязи.'
-    },
-    {
-      id: 5,
-      question: 'Предоставляете ли вы питание?',
-      answer: 'В номерах есть мини-холодильники и чайники. На территории работает кафе, где можно заказать завтрак, обед и ужин. Также есть оборудованные мангальные зоны для самостоятельного приготовления пищи.'
-    },
-    {
-      id: 6,
-      question: 'Какое время заезда и выезда?',
-      answer: 'Стандартное время заезда — 14:00, выезда — 12:00. При наличии свободных номеров возможен ранний заезд или поздний выезд за дополнительную плату.'
-    },
-    {
-      id: 7,
-      question: 'Можно ли отменить бронирование?',
-      answer: 'Да, бронирование можно отменить бесплатно за 7 дней до заезда. При отмене за 3-7 дней — удерживается 50% предоплаты, при отмене менее чем за 3 дня — предоплата не возвращается.'
-    },
-    {
-      id: 8,
-      question: 'Есть ли трансфер от станции/аэропорта?',
-      answer: 'Да, мы организуем трансфер от ж/д станции Осташков или других удобных точек. Стоимость зависит от расстояния и количества пассажиров. Заказать трансфер можно при бронировании.'
-    },
-    {
-      id: 9,
-      question: 'Какие развлечения доступны зимой?',
-      answer: 'Зимой доступны: русская баня, прогулки по заснеженному лесу, подледная рыбалка (при наличии льда), катание на лыжах, настольные игры в номерах, мангальные зоны работают круглый год.'
-    },
-    {
-      id: 10,
-      question: 'Есть ли аптечка или медицинская помощь?',
-      answer: 'На базе есть аптечка первой помощи. Ближайшая больница находится в Осташкове (25 км). При серьезных проблемах мы поможем вызвать скорую помощь.'
-    }
-  ];
+  useEffect(() => {
+    fetch('/faq.json')
+      .then(res => res.json())
+      .then(setFaqData);
+  }, []);
 
-  const toggleFAQ = (id: number) => {
+  useEffect(() => {
+    fetch('/contacts.json')
+      .then(res => res.json())
+      .then((arr) => {
+        const obj = Object.fromEntries(arr.map(i => [i.key, i.value]));
+        setContacts(obj);
+      });
+  }, []);
+
+  const toggleFAQ = (id: string) => {
     setOpenFAQ(openFAQ === id ? null : id);
   };
 
@@ -112,18 +82,24 @@ const FAQ = () => {
             Свяжитесь с нами любым удобным способом, и мы с радостью поможем вам!
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <a href="tel:+79525129738" className="inline-flex items-center space-x-2 bg-white text-nature-green-600 px-6 py-3 rounded-xl hover:bg-gray-100 transition-colors duration-200 font-medium">
-              <Phone size={18} />
-              <span>Позвонить</span>
-            </a>
-            <a href="mailto:chestem@mail.ru" className="inline-flex items-center space-x-2 bg-white text-nature-green-600 px-6 py-3 rounded-xl hover:bg-gray-100 transition-colors duration-200 font-medium">
-              <Mail size={18} />
-              <span>Написать</span>
-            </a>
-            <a href="https://t.me/kamenniy_bereg" target="_blank" rel="noopener noreferrer" className="inline-flex items-center space-x-2 bg-white text-nature-green-600 px-6 py-3 rounded-xl hover:bg-gray-100 transition-colors duration-200 font-medium">
-              <MessageCircle size={18} />
-              <span>Telegram</span>
-            </a>
+            {contacts.phone && (
+              <a href={`tel:${contacts.phone}`} className="inline-flex items-center space-x-2 bg-white text-nature-green-600 px-6 py-3 rounded-xl hover:bg-gray-100 transition-colors duration-200 font-medium">
+                <Phone size={18} />
+                <span>Позвонить</span>
+              </a>
+            )}
+            {contacts.email && (
+              <a href={`mailto:${contacts.email}`} className="inline-flex items-center space-x-2 bg-white text-nature-green-600 px-6 py-3 rounded-xl hover:bg-gray-100 transition-colors duration-200 font-medium">
+                <Mail size={18} />
+                <span>Написать</span>
+              </a>
+            )}
+            {contacts.social_tg && (
+              <a href={contacts.social_tg} target="_blank" rel="noopener noreferrer" className="inline-flex items-center space-x-2 bg-white text-nature-green-600 px-6 py-3 rounded-xl hover:bg-gray-100 transition-colors duration-200 font-medium">
+                <MessageCircle size={18} />
+                <span>Telegram</span>
+              </a>
+            )}
           </div>
         </div>
       </div>

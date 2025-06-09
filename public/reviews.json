@@ -1,0 +1,74 @@
+[
+  {
+    "id": "1",
+    "name": "Анна Петрова",
+    "platform": "2ГИС",
+    "rating": "5",
+    "date": "Июль 2024",
+    "review": "Потрясающее место...",
+    "photo_url": "https://res.cloudinary.com/demo/image/upload/park.jpg"
+  },
+  {
+    "id": "2",
+    "name": "Анна Петрова",
+    "platform": "Яндекс",
+    "rating": "4",
+    "date": "Август 2024",
+    "review": "Отлично, все понравилось",
+    "photo_url": "https://res.cloudinary.com/demo/image/upload/sample.jpg"
+  },
+  {
+    "id": "3",
+    "name": "Дмитрий Козлов",
+    "platform": "Отзывы",
+    "rating": "5",
+    "date": "Сентябрь 2024",
+    "review": "Приехали компанией на выходные. Отличная баня, вкусное барбекю, чистое озеро. Персонал очень дружелюбный и отзывчивый. Обязательно вернемся!",
+    "photo_url": "https://res.cloudinary.com/demo/image/upload/park.jpg"
+  },
+  {
+    "id": "4",
+    "name": "Анна Петрова",
+    "platform": "Яндекс",
+    "rating": "3",
+    "date": "Август 2024",
+    "review": "не ок",
+    "photo_url": "https://res.cloudinary.com/demo/image/upload/sample.jpg"
+  },
+  {
+    "id": "5",
+    "name": "Анна Петрова",
+    "platform": "2ГИС",
+    "rating": "5",
+    "date": "Июль 2024",
+    "review": "Потрясающее место...",
+    "photo_url": "https://res.cloudinary.com/demo/image/upload/park.jpg"
+  },
+  {
+    "id": "6",
+    "name": "Анна Петрова",
+    "platform": "Яндекс",
+    "rating": "4",
+    "date": "Август 2024",
+    "review": "Отлично, все понравилось",
+    "photo_url": "https://res.cloudinary.com/demo/image/upload/sample.jpg"
+  },
+  {
+    "id": "7",
+    "name": "Дмитрий Козлов",
+    "platform": "Отзывы",
+    "rating": "5",
+    "date": "Сентябрь 2024",
+    "review": "Приехали компанией на выходные. Отличная баня, вкусное барбекю, чистое озеро. Персонал очень дружелюбный и отзывчивый. Обязательно вернемся!",
+    "photo_url": "https://res.cloudinary.com/demo/image/upload/park.jpg"
+  },
+  {
+    "id": "8",
+    "name": "Анна Петрова",
+    "platform": "Яндекс",
+    "rating": "3",
+    "date": "Август 2024",
+    "review": "не ок",
+    "photo_url": "https://res.cloudinary.com/demo/image/upload/sample.jpg"
+  }
+]

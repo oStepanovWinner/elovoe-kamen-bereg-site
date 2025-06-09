@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from 'react';
-import useSWR, { mutate } from 'swr';
 
 interface TelegramPost {
   id: number;
@@ -21,7 +20,6 @@ interface TelegramPost {
   };
 }
 
-const API_URL = 'https://telegram-widget-backend.onrender.com/api/telegram';
 const GROUP_NAME = "Каменный берег - База отдыха";
 
 // Добавляем функцию linkify
@@ -50,7 +48,7 @@ function linkifyDescription(text: string) {
   let result = text.replace(/<br\s*\/?\s*>/gi, '\n');
   // Ищем ссылки с http/https и домены без протокола
   result = result.replace(
-    /(https?:\/\/[\w\-\.\/?#&=;%:]+)|(\b[\w\-\.]+\.(ru|com|net|org|by|ua|kz|su)\b)/gi,
+    /(https?:\/\/[\w\-.?#&=;%:]+)|(\b[\w\-.]+\.(ru|com|net|org|by|ua|kz|su)\b)/gi,
     (match) => {
       let url = match;
       if (!/^https?:\/\//i.test(url)) {
@@ -62,16 +60,29 @@ function linkifyDescription(text: string) {
   return result;
 }
 
-const fetcher = (url: string) => fetch(url).then(res => res.json());
-
 const TelegramFeedWidget: React.FC = () => {
   const feedRef = useRef<HTMLDivElement>(null);
-  const { data: posts, isLoading } = useSWR(API_URL, fetcher, {
-    dedupingInterval: 60 * 60 * 1000, // 1 час
-    revalidateOnFocus: false,
-  });
+  const [posts, setPosts] = useState<TelegramPost[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [modalPhoto, setModalPhoto] = useState<string | null>(null);
-  const [showRefresh, setShowRefresh] = useState(false);
+
+  useEffect(() => {
+    fetch('/news.json')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          setPosts(data);
+        } else {
+          setPosts([]);
+        }
+        setIsLoading(false);
+      })
+      .catch(() => {
+        setError('Ошибка загрузки новостей');
+        setIsLoading(false);
+      });
+  }, []);
 
   useEffect(() => {
     if (!isLoading && feedRef.current) {
@@ -81,29 +92,20 @@ const TelegramFeedWidget: React.FC = () => {
     }
   }, [isLoading]);
 
-  useEffect(() => {
-    if (isLoading) {
-      const timer = setTimeout(() => setShowRefresh(true), 3000);
-      return () => clearTimeout(timer);
-    } else {
-      setShowRefresh(false);
-    }
-  }, [isLoading]);
-
-  if (isLoading || !posts) {
+  if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center w-full h-full gap-4">
         <span className="text-nature-green-600">Загрузка...</span>
-        {showRefresh && (
-          <button
-            onClick={() => mutate(API_URL)}
-            className="px-4 py-2 rounded-lg bg-nature-green-600 text-white font-semibold hover:bg-nature-green-700 transition shadow"
-          >
-            Обновить
-          </button>
-        )}
       </div>
     );
+  }
+
+  if (error) {
+    return <div className="text-red-600 text-center py-8">{error}</div>;
+  }
+
+  if (!Array.isArray(posts) || posts.length === 0) {
+    return <div className="text-nature-green-600 text-center py-8">Нет новостей</div>;
   }
 
   return (

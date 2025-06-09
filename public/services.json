@@ -1,0 +1,42 @@
+[
+  {
+    "id": "1",
+    "name": "Кафе-столовая",
+    "description": "Домашняя кухня с разнообразным меню из свежих продуктов",
+    "price": "от 300 ₽",
+    "features": "Завтраки, Обеды, Ужины, Детское меню",
+    "image_url": "https://res.cloudinary.com/demo/image/upload/beach.jpg"
+  },
+  {
+    "id": "2",
+    "name": "Детская игровая площадка",
+    "description": "Безопасная и современная площадка для детей разных возрастов",
+    "price": "Бесплатно",
+    "features": "Качели, Горки, Песочница",
+    "image_url": "https://res.cloudinary.com/dwhb1qzhw/image/upload/e_sharpen:40/e_saturation:30/e_brightness:10/e_contrast:15/co_rgb:f9dca2,e_colorize:10/e_gen_remove:prompt_watermark/e_enhance/f_webp/q_auto:best/dsc_0842_j1meea"
+  },
+  {
+    "id": "3",
+    "name": "Мангальные зоны",
+    "description": "Более 10 мангальных зон, расположенных в отдалении друг от друга. Освещены и расположены у каждого корпуса и у берега озера",
+    "price": "Бесплатно",
+    "features": "Мангалы,Столы и скамейки",
+    "image_url": "https://res.cloudinary.com/demo/image/upload/park.jpg"
+  },
+  {
+    "id": "4",
+    "name": "Парковка",
+    "description": "Размещение личного автотранспорта на парковке рядом с корпусом",
+    "price": "Бесплатно",
+    "features": "Охраняемая территория, Рядом с корпусами, Круглосуточный доступ",
+    "image_url": "https://i.imgur.com/xBgRpcI.png"
+  },
+  {
+    "id": "5",
+    "name": "Понтонный пирс",
+    "description": "Просто описание",
+    "price": "Бесплатно",
+    "features": "\"Лягушатник\"",
+    "image_url": "https://i.imgur.com/xBgRpcI.png"
+  }
+]

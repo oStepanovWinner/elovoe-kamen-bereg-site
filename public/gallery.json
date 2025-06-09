@@ -1,0 +1,20 @@
+[
+  {
+    "id": "1",
+    "photo_url": "https://res.cloudinary.com/demo/image/upload/sample.jpg",
+    "title": "Озеро на рассвете",
+    "category": "Природа"
+  },
+  {
+    "id": "2",
+    "photo_url": "https://res.cloudinary.com/demo/image/upload/park.jpg",
+    "title": "Интерьер номера",
+    "category": "Номера"
+  },
+  {
+    "id": "3",
+    "photo_url": "https://res.cloudinary.com/demo/image/upload/beach.jpg",
+    "title": "Пляж",
+    "category": "Территория"
+  }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "key": "phone",
+    "value": "8-952-512-97-38"
+  },
+  {
+    "key": "work_time_phone",
+    "value": "9:00 - 21:00"
+  },
+  {
+    "key": "email",
+    "value": "chestem@mail.ru"
+  },
+  {
+    "key": "address",
+    "value": "Челябинская область, г. Чебаркуль"
+  },
+  {
+    "key": "work_time",
+    "value": "10:00-20:00"
+  },
+  {
+    "key": "checkin_time",
+    "value": "до 12:00"
+  },
+  {
+    "key": "checkout_time",
+    "value": "до 14:00"
+  },
+  {
+    "key": "social_vk",
+    "value": "https://vk.com/elovoekamenbereg"
+  },
+  {
+    "key": "social_tg",
+    "value": "https://t.me/kamenniy_bereg"
+  }
+]

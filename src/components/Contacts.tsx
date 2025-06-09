@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import BookingForm from './BookingForm';
 import { Button } from '@/components/ui/button';
 const PhoneIcon = () => <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -20,6 +19,15 @@ const TelegramIcon = () => <svg className="w-5 h-5" viewBox="0 0 24 24" fill="cu
     <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" />
   </svg>;
 const Contacts = () => {
+  const [contacts, setContacts] = useState<Record<string, string>>({});
+  useEffect(() => {
+    fetch('/contacts.json')
+      .then(res => res.json())
+      .then((arr: {key: string, value: string}[]) => {
+        setContacts(Object.fromEntries(arr.map(i => [i.key, i.value])));
+      });
+  }, []);
+
   return <section id="contacts" className="section-padding bg-white">
       <div className="max-w-7xl mx-auto">
         {/* Заголовок секции */}
@@ -50,7 +58,7 @@ const Contacts = () => {
                     </div>
                     <div>
                       <h4 className="font-semibold text-nature-green-800 mb-1">Телефон</h4>
-                      <p className="text-nature-green-700">+7-952-512-97-38</p>
+                      <p className="text-nature-green-700">{contacts['phone']}</p>
                       <p className="text-sm text-nature-green-600">Ежедневно с 9:00 до 21:00</p>
                     </div>
                   </div>
@@ -62,7 +70,7 @@ const Contacts = () => {
                     </div>
                     <div>
                       <h4 className="font-semibold text-nature-green-800 mb-1">Email</h4>
-                      <p className="text-nature-green-700">chestem@mail.ru</p>
+                      <p className="text-nature-green-700">{contacts['email']}</p>
                     </div>
                   </div>
 
@@ -74,7 +82,7 @@ const Contacts = () => {
                     <div>
                       <h4 className="font-semibold text-nature-green-800 mb-1">Адрес</h4>
                       <p className="text-nature-green-700">
-                        Челябинская область, Чебаркульский район
+                        {contacts['address']}
                       </p>
                     </div>
                   </div>
@@ -85,10 +93,10 @@ const Contacts = () => {
               <div className="mt-8">
                 <h4 className="font-semibold text-nature-green-800 mb-3">Мы в соцсетях</h4>
                 <div className="flex space-x-3">
-                  <a href="https://vk.com/kamenberegelovoe" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-nature-green-600 rounded-lg flex items-center justify-center text-white hover:bg-nature-green-700 hover:scale-110 transition-all duration-200">
+                  <a href={contacts['social_vk']} target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-nature-green-600 rounded-lg flex items-center justify-center text-white hover:bg-nature-green-700 hover:scale-110 transition-all duration-200">
                     <VkIcon />
                   </a>
-                  <a href="https://t.me/kamenniy_bereg" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-nature-green-600 rounded-lg flex items-center justify-center text-white hover:bg-nature-green-700 hover:scale-110 transition-all duration-200">
+                  <a href={contacts['social_tg']} target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-nature-green-600 rounded-lg flex items-center justify-center text-white hover:bg-nature-green-700 hover:scale-110 transition-all duration-200">
                     <TelegramIcon />
                   </a>
                 </div>
@@ -140,11 +148,11 @@ const Contacts = () => {
                 <div className="space-y-2 text-nature-green-700">
                   <div className="flex justify-between">
                     <span>Понедельник - Воскресенье:</span>
-                    <span>9:00 - 21:00</span>
+                    <span>{contacts['work_time']}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Заезд/выезд:</span>
-                    <span>с 14:00 / до 14:00</span>
+                    <span>{contacts['checkin_time']} / {contacts['checkout_time']}</span>
                   </div>
                 </div>
               </div>

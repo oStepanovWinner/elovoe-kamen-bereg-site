@@ -1,67 +1,41 @@
 import React, { useState, useRef, useEffect } from 'react';
 
+interface GalleryImage {
+  id: string;
+  src: string;
+  alt: string;
+  category: string;
+}
+
 const Gallery = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
+  const [categories, setCategories] = useState<string[]>(['Все']);
+  const [activeCategory, setActiveCategory] = useState('Все');
+  const [currentIndex, setCurrentIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Реальные фотографии для галереи
-  const galleryImages = [
-    {
-      id: 1,
-      src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      alt: 'Озеро на рассвете',
-      category: 'Природа'
-    },
-    {
-      id: 2,
-      src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      alt: 'Лесная тропа',
-      category: 'Природа'
-    },
-    {
-      id: 3,
-      src: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      alt: 'Интерьер номера',
-      category: 'Номера'
-    },
-    {
-      id: 4,
-      src: 'https://images.unsplash.com/photo-1566665797739-1674de7a421a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      alt: 'Семейный номер',
-      category: 'Номера'
-    },
-    {
-      id: 5,
-      src: 'https://images.unsplash.com/photo-1518495973542-4542c06a5843?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      alt: 'Зона барбекю',
-      category: 'Территория'
-    },
-    {
-      id: 6,
-      src: 'https://images.unsplash.com/photo-1464207687429-7505649dae38?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      alt: 'Пляжная зона',
-      category: 'Территория'
-    },
-    {
-      id: 7,
-      src: 'https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      alt: 'Вечерний пейзаж',
-      category: 'Природа'
-    }
-  ];
+  useEffect(() => {
+    fetch('/gallery.json')
+      .then(res => res.json())
+      .then((data: {id: string, photo_url: string, title: string, category: string}[]) => {
+        setGalleryImages(data.map((img) => ({
+          id: img.id,
+          src: img.photo_url,
+          alt: img.title,
+          category: img.category
+        })));
+        const cats = Array.from(new Set(data.map((img) => img.category)));
+        setCategories(['Все', ...cats.filter(Boolean)]);
+      });
+  }, []);
 
-  const categories = ['Все', 'Природа', 'Номера', 'Территория'];
-  const [activeCategory, setActiveCategory] = useState('Все');
-
-  const filteredImages = activeCategory === 'Все' 
-    ? galleryImages 
+  const filteredImages = activeCategory === 'Все'
+    ? galleryImages
     : galleryImages.filter(img => img.category === activeCategory);
 
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  // Обновляем currentIndex при изменении категории
   useEffect(() => {
     setCurrentIndex(0);
   }, [activeCategory]);

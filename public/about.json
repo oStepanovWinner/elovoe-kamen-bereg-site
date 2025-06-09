@@ -1,0 +1,82 @@
+[
+  {
+    "key": "photo_url",
+    "value": "https://res.cloudinary.com/dwhb1qzhw/image/upload/e_gen_remove:prompt_manhole;multiple_true/e_gen_remove:prompt_parked%20cars;remove-shadow_true/e_gen_replace:from_parked%20cars;to_What%20if%20the%20cars%20weren't%20in%20the%20picture;preserve-geometry_true;multiple_true/e_gen_restore/q_auto/e_enhance/e_contrast:-10/e_gamma/e_brightness:-10/q_auto:best/e_gen_replace:from_sky;to_The%20natural%20sky%20is%20clear%20with%20few%20white%20clouds%20and%20no%20sun;multiple_true/f_webp/e_enhance/e_enhance/XXXL_ujedjs"
+  },
+  {
+    "key": "description",
+    "value": "\"Каменный берег\" — это уютная база отдыха на живописном берегу озера, где можно насладиться тишиной природы и активным отдыхом. Мы предлагаем комфортабельные номера, разнообразные развлечения и незабываемые впечатления для всей семьи."
+  },
+  {
+    "key": "icon1",
+    "value": "house"
+  },
+  {
+    "key": "feature1_title",
+    "value": "Уютные номера"
+  },
+  {
+    "key": "feature1_desc",
+    "value": "Комфортабельные номера с современными удобствами"
+  },
+  {
+    "key": "icon2",
+    "value": "waves"
+  },
+  {
+    "key": "feature2_title",
+    "value": "Чистое озеро"
+  },
+  {
+    "key": "feature2_desc",
+    "value": "Кристально чистая вода для купания и рыбалки"
+  },
+  {
+    "key": "icon3",
+    "value": "trees"
+  },
+  {
+    "key": "feature3_title",
+    "value": "Отдых на природе"
+  },
+  {
+    "key": "feature3_desc",
+    "value": "Прогулки, рыбалка и единение с природой"
+  },
+  {
+    "key": "icon4",
+    "value": "chef-hat"
+  },
+  {
+    "key": "feature4_title",
+    "value": "Кафе-столовая"
+  },
+  {
+    "key": "feature4_desc",
+    "value": "Домашняя кухня и свежие продукты"
+  },
+  {
+    "key": "icon5",
+    "value": "squirrel"
+  },
+  {
+    "key": "feature5_title",
+    "value": "тест"
+  },
+  {
+    "key": "feature5_desc",
+    "value": "тест"
+  },
+  {
+    "key": "icon6",
+    "value": "biceps-flexed"
+  },
+  {
+    "key": "feature6_title",
+    "value": "тест2"
+  },
+  {
+    "key": "feature6_desc",
+    "value": "тест2"
+  }
+]

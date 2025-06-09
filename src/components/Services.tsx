@@ -1,6 +1,24 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 
+interface ServiceRaw {
+  id: string;
+  name: string;
+  description: string;
+  image_url: string;
+  price: string;
+  features: string[] | string;
+}
+
+interface Service {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  price: string;
+  features: string[];
+}
+
 const Services = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ 
     loop: true,
@@ -12,45 +30,28 @@ const Services = () => {
   });
   const [currentSlide, setCurrentSlide] = useState(0);
   const [slidesPerView, setSlidesPerView] = useState(1);
+  const [services, setServices] = useState<Service[]>([]);
 
   // Touch/swipe state with improved sensitivity
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
 
-  const services = [
-    {
-      id: 1,
-      title: 'Кафе-столовая',
-      description: 'Домашняя кухня с разнообразным меню из свежих продуктов',
-      image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      price: 'от 300 ₽',
-      features: ['Завтраки', 'Обеды', 'Ужины', 'Детское меню']
-    },
-    {
-      id: 2,
-      title: 'Детская игровая площадка',
-      description: 'Безопасная и современная площадка для детей разных возрастов',
-      image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      price: 'бесплатно',
-      features: ['Качели', 'Горки', 'Песочница', 'Безопасное покрытие']
-    },
-    {
-      id: 3,
-      title: 'Мангальные зоны',
-      description: 'Более 10 мангальных зон, расположенных в отдалении друг от друга. Освещены и расположены у каждого корпуса и у берега озера',
-      image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      price: 'бесплатно',
-      features: ['Мангалы', 'Решетки', 'Дрова/уголь', 'Столы и скамейки']
-    },
-    {
-      id: 4,
-      title: 'Парковка',
-      description: 'Размещение личного автотранспорта на парковке рядом с корпусом',
-      image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      price: 'бесплатно',
-      features: ['Охраняемая территория', 'Рядом с корпусами', 'Круглосуточный доступ', 'Видеонаблюдение']
-    }
-  ];
+  useEffect(() => {
+    fetch('/services.json')
+      .then(res => res.json())
+      .then((data: ServiceRaw[]) => {
+        setServices(data.map(service => ({
+          id: service.id,
+          title: service.name,
+          description: service.description,
+          image: service.image_url,
+          price: service.price,
+          features: Array.isArray(service.features)
+            ? service.features
+            : (typeof service.features === 'string' && service.features ? service.features.split(',').map((f: string) => f.trim()) : [])
+        })));
+      });
+  }, []);
 
   // Calculate slides per view based on screen size
   useEffect(() => {
@@ -141,38 +142,33 @@ const Services = () => {
           >
             <div className="embla__container flex">
               {services.map(service => (
-                <div key={service.id} className="embla__slide flex-none w-full md:w-1/2 lg:w-1/3 px-3">
-                  <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 group h-full">
+                <div key={service.id} className="embla__slide flex-none w-full md:w-1/2 lg:w-1/3 px-3 pb-4">
+                  <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 group flex flex-col h-[36rem]">
                     {/* Изображение */}
-                    <div className="relative h-48 overflow-hidden">
+                    <div className="w-full h-60 flex items-center justify-center overflow-hidden rounded-t-2xl bg-gray-100 relative">
                       <img 
                         src={service.image} 
                         alt={service.title} 
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" 
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-nature-green-900/60 to-transparent"></div>
                       <div className="absolute top-4 right-4 bg-nature-gold-500 text-nature-green-800 px-3 py-1 rounded-full text-sm font-semibold">
                         {service.price}
                       </div>
                     </div>
 
                     {/* Контент */}
-                    <div className="p-6 flex flex-col h-[calc(100%-12rem)]">
-                      <h3 className="text-xl font-bold text-nature-green-800 mb-3">{service.title}</h3>
-                      <p className="text-nature-green-600 mb-4 leading-relaxed flex-grow">{service.description}</p>
-                      
-                      {/* Особенности */}
-                      <div className="space-y-2">
-                        <h4 className="text-sm font-semibold text-nature-green-700 uppercase tracking-wider">Включено:</h4>
-                        <ul className="grid grid-cols-2 gap-1 text-sm text-nature-green-600">
-                          {service.features.map((feature, index) => (
-                            <li key={index} className="flex items-center">
-                              <div className="w-1.5 h-1.5 bg-nature-gold-500 rounded-full mr-2"></div>
-                              {feature}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
+                    <div className="p-6 flex flex-col h-[calc(100%-15rem)]">
+                      <div className="h-10 flex items-start text-xl font-bold text-nature-green-800 mb-3">{service.title}</div>
+                      <div className="h-24 flex items-start text-nature-green-600 leading-relaxed mb-6">{service.description}</div>
+                      <div className="h-6 flex items-center text-sm font-semibold text-nature-green-700 uppercase tracking-wider mb-2">Включено:</div>
+                      <ul className="pl-4 grid grid-cols-2 gap-x-4 gap-y-3 text-sm text-nature-green-600 mt-2">
+                        {service.features.map((feature, index) => (
+                          <li key={index} className="flex items-center h-8">
+                            <div className="w-1.5 h-1.5 bg-nature-gold-500 rounded-full mr-2"></div>
+                            {feature}
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   </div>
                 </div>
