@@ -11,7 +11,7 @@ interface Room {
   price: string;
   capacity: string;
   features: string[];
-  image: string;
+  images: string[];
   description?: string;
 }
 
@@ -46,7 +46,7 @@ const Rooms = () => {
           features: Array.isArray(room.features)
             ? room.features
             : (room.features ? room.features.split(',').map((f: string) => f.trim()) : []),
-          image: room.image_url,
+          images: room.image_url ? room.image_url.split(';').map((url: string) => url.trim()).filter(Boolean) : [],
           description: room.description
         })));
       });
@@ -165,7 +165,7 @@ const Rooms = () => {
                     {/* Изображение */}
                     <div className="relative h-64 overflow-hidden">
                       <img 
-                        src={room.image} 
+                        src={room.images[0]} 
                         alt={room.name} 
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
                       />
@@ -203,24 +203,9 @@ const Rooms = () => {
                       {/* Кнопка подробнее */}
                       <Button 
                         onClick={() => openRoomDetails(room)}
-                        className="w-full bg-nature-green-600 hover:bg-nature-green-700 text-white 
-                        font-medium py-3 rounded-xl 
-                        shadow-[0_4px_12px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_16px_rgba(0,0,0,0.2)]
-                        transform hover:scale-102 active:scale-98
-                        transition-all duration-200 ease-in-out
-                        group"
+                        className="bg-nature-gold-500 hover:bg-nature-gold-600 text-nature-green-800 font-semibold px-6 py-2 mt-auto"
                       >
-                        <span className="inline-flex items-center">
-                          Подробнее
-                          <svg 
-                            className="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-200" 
-                            fill="none" 
-                            stroke="currentColor" 
-                            viewBox="0 0 24 24"
-                          >
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                          </svg>
-                        </span>
+                        Подробнее
                       </Button>
                     </div>
                   </div>
@@ -269,6 +254,7 @@ const Rooms = () => {
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           onBook={handleBookRoom}
+          images={selectedRoom.images}
         />
       )}
     </section>

@@ -151,7 +151,13 @@ const Reviews = () => {
                   <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 h-full">
                     {/* Заголовок отзыва */}
                     <div className="flex items-center space-x-4 mb-4">
-                      <img src={review.photo_url} alt={review.name} className="w-12 h-12 rounded-full object-cover" />
+                      {review.photo_url ? (
+                        <img src={review.photo_url} alt={review.name} className="w-12 h-12 rounded-full object-cover" />
+                      ) : (
+                        <div className="w-12 h-12 rounded-full bg-nature-green-100 flex items-center justify-center text-nature-green-400 text-xl font-bold select-none">
+                          {review.name ? review.name[0].toUpperCase() : '?'}
+                        </div>
+                      )}
                       <div className="flex-1">
                         <h4 className="font-semibold text-nature-green-800">{review.name}</h4>
                         <p className="text-sm text-nature-green-600">{review.platform}</p>

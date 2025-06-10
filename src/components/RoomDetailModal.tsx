@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, Users, Bed, Bath, Wifi, Car, Utensils, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import useEmblaCarousel from 'embla-carousel-react';
 
 interface Room {
   id: string;
@@ -20,10 +21,22 @@ interface RoomDetailModalProps {
   isOpen: boolean;
   onClose: () => void;
   onBook: () => void;
+  images: string[];
 }
 
-const RoomDetailModal: React.FC<RoomDetailModalProps> = ({ room, isOpen, onClose, onBook }) => {
-  const [fullImage, setFullImage] = useState(false);
+const RoomDetailModal: React.FC<RoomDetailModalProps> = ({ room, isOpen, onClose, onBook, images }) => {
+  const [fullImage, setFullImage] = useState<string|null>(null);
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  React.useEffect(() => {
+    if (!emblaApi) return;
+    const onSelect = () => setCurrentIndex(emblaApi.selectedScrollSnap());
+    emblaApi.on('select', onSelect);
+    onSelect();
+    return () => { if (emblaApi) emblaApi.off('select', onSelect); };
+  }, [emblaApi]);
+
   if (!isOpen) return null;
 
   const getFeatureIcon = (feature: string) => {
@@ -34,9 +47,6 @@ const RoomDetailModal: React.FC<RoomDetailModalProps> = ({ room, isOpen, onClose
     if (feature.includes('кухн')) return <Utensils size={16} />;
     return <Home size={16} />;
   };
-
-  const imageSrc = room.image_url || room.image;
-  const imageAlt = room.name || room.title;
 
   return (
     <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
@@ -54,17 +64,64 @@ const RoomDetailModal: React.FC<RoomDetailModalProps> = ({ room, isOpen, onClose
 
         {/* Контент модального окна */}
         <div className="p-6">
-          {/* Изображение номера */}
-          <div className="relative h-80 mb-6 rounded-xl overflow-hidden flex items-center justify-center bg-nature-green-50 cursor-zoom-in"
-               onClick={() => setFullImage(true)}
-               title="Открыть изображение на весь экран">
-            <img 
-              src={imageSrc} 
-              alt={imageAlt} 
-              className="w-full h-full object-contain rounded-xl transition-transform duration-200 hover:scale-105"
-              style={{ maxHeight: '20rem' }}
-            />
-            <div className="absolute bottom-2 right-2 bg-white/80 text-xs px-2 py-1 rounded shadow">Нажмите для увеличения</div>
+          {/* Слайдер изображений номера */}
+          <div className="relative h-80 mb-6 rounded-xl overflow-hidden bg-nature-green-50">
+            {/* Стрелка влево */}
+            {images.length > 1 && (
+              <button
+                onClick={e => { e.stopPropagation(); emblaApi && emblaApi.scrollPrev(); }}
+                className="absolute left-0 top-0 h-full w-10 flex items-center justify-center bg-transparent hover:bg-transparent transition-colors duration-200 z-10 group"
+                style={{ outline: 'none' }}
+                tabIndex={-1}
+                aria-label="Предыдущее фото"
+              >
+                <svg className="h-7 w-7 text-white drop-shadow-2xl filter drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] group-hover:text-nature-green-600 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+            )}
+            {/* Стрелка вправо */}
+            {images.length > 1 && (
+              <button
+                onClick={e => { e.stopPropagation(); emblaApi && emblaApi.scrollNext(); }}
+                className="absolute right-0 top-0 h-full w-10 flex items-center justify-center bg-transparent hover:bg-transparent transition-colors duration-200 z-10 group"
+                style={{ outline: 'none' }}
+                tabIndex={-1}
+                aria-label="Следующее фото"
+              >
+                <svg className="h-7 w-7 text-white drop-shadow-2xl filter drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] group-hover:text-nature-green-600 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            )}
+            <div className="embla h-full" ref={emblaRef}>
+              <div className="embla__container flex h-full">
+                {images.map((img, idx) => (
+                  <div key={idx} className="embla__slide flex-none w-full h-80 flex items-center justify-center cursor-zoom-in" onClick={() => setFullImage(img)}>
+                    <img
+                      src={img}
+                      alt={room.name || room.title}
+                      className="w-full h-full object-contain rounded-xl transition-transform duration-200 hover:scale-105"
+                      style={{ maxHeight: '20rem' }}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+            {/* Точки-индикаторы */}
+            {images.length > 1 && (
+              <div className="flex justify-center mt-3 space-x-2 absolute left-1/2 -translate-x-1/2 bottom-2 z-10">
+                {images.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={e => { e.stopPropagation(); emblaApi && emblaApi.scrollTo(idx); }}
+                    className={`w-3 h-3 rounded-full transition-colors border-2 ${currentIndex === idx ? 'bg-nature-gold-500 border-nature-gold-500' : 'bg-white border-nature-green-300'}`}
+                    aria-label={`Перейти к фото ${idx + 1}`}
+                  />
+                ))}
+              </div>
+            )}
+            {/* Цена и вместимость поверх слайдера */}
             <div className="absolute top-4 left-4 bg-nature-green-600 text-white px-3 py-1 rounded-full text-sm font-semibold flex items-center space-x-1">
               <Users size={14} />
               <span>{room.capacity}</span>
@@ -101,7 +158,7 @@ const RoomDetailModal: React.FC<RoomDetailModalProps> = ({ room, isOpen, onClose
           <div className="flex flex-col sm:flex-row gap-4 sticky bottom-0 bg-white p-4 border-t border-gray-100">
             <Button
               onClick={onBook}
-              className="flex-1 bg-primary hover:bg-primary/90 text-white font-medium py-3 rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_16px_rgba(0,0,0,0.2)] transform hover:scale-102 active:scale-98 transition-all duration-200 ease-in-out sm:order-1"
+              className="flex-1 bg-nature-gold-500 hover:bg-nature-gold-600 text-nature-green-800 font-medium py-3 rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_16px_rgba(0,0,0,0.2)] transform hover:scale-102 active:scale-98 transition-all duration-200 ease-in-out sm:order-1"
             >
               Забронировать номер
             </Button>
@@ -121,15 +178,15 @@ const RoomDetailModal: React.FC<RoomDetailModalProps> = ({ room, isOpen, onClose
       </div>
       {/* Модальное окно для полного изображения */}
       {fullImage && (
-        <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/90" onClick={() => setFullImage(false)}>
+        <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/90" onClick={() => setFullImage(null)}>
           <img
-            src={imageSrc}
-            alt={imageAlt}
+            src={fullImage}
+            alt={room.name || room.title}
             className="max-h-[90vh] max-w-full object-contain rounded-2xl shadow-2xl border-4 border-white"
           />
           <button
             className="absolute top-4 right-4 text-white bg-black/50 rounded-full w-10 h-10 flex items-center justify-center hover:bg-black/70 transition-colors duration-200"
-            onClick={e => { e.stopPropagation(); setFullImage(false); }}
+            onClick={e => { e.stopPropagation(); setFullImage(null); }}
             aria-label="Закрыть"
           >
             <X size={28} />
