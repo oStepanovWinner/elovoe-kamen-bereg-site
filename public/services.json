@@ -5,7 +5,7 @@
     "description": "Домашняя кухня с разнообразным меню из свежих продуктов",
     "price": "от 300 ₽",
     "features": "Завтраки, Обеды, Ужины, Детское меню",
-    "image_url": "https://res.cloudinary.com/demo/image/upload/beach.jpg"
+    "image_url": "https://res.cloudinary.com/dwhb1qzhw/image/upload/e_upscale/e_enhance/q_auto:good/f_webp/%D1%81%D1%82%D0%BE%D0%BB%D0%BE%D0%B2%D0%B0%D1%8F_drrhhb"
   },
   {
     "id": "2",
@@ -21,7 +21,7 @@
     "description": "Более 10 мангальных зон, расположенных в отдалении друг от друга. Освещены и расположены у каждого корпуса и у берега озера",
     "price": "Бесплатно",
     "features": "Мангалы,Столы и скамейки",
-    "image_url": "https://res.cloudinary.com/demo/image/upload/park.jpg"
+    "image_url": "https://res.cloudinary.com/dwhb1qzhw/image/upload/e_upscale/e_enhance/f_webp/q_auto:good/%D0%BC%D0%B0%D0%BD%D0%B3%D0%B0%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F_%D0%B7%D0%BE%D0%BD%D0%B0_mn0n4s"
   },
   {
     "id": "4",
@@ -29,7 +29,7 @@
     "description": "Размещение личного автотранспорта на парковке рядом с корпусом",
     "price": "Бесплатно",
     "features": "Охраняемая территория, Рядом с корпусами, Круглосуточный доступ",
-    "image_url": "https://i.imgur.com/xBgRpcI.png"
+    "image_url": "https://res.cloudinary.com/dwhb1qzhw/image/upload/e_upscale/e_enhance/q_auto:good/f_webp/%D0%BF%D0%B0%D1%80%D0%BA%D0%BE%D0%B2%D0%BA%D0%B0_wralhn"
   },
   {
     "id": "5",
@@ -37,22 +37,6 @@
     "description": "Просто описание",
     "price": "Бесплатно",
     "features": "\"Лягушатник\"",
-    "image_url": "https://i.imgur.com/xBgRpcI.png"
-  },
-  {
-    "id": "6",
-    "name": "Понтонный пирс",
-    "description": "Просто описание",
-    "price": "Бесплатно",
-    "features": "\"Лягушатник\"",
-    "image_url": "https://i.imgur.com/xBgRpcI.png"
-  },
-  {
-    "id": "7",
-    "name": "Понтонный пирс",
-    "description": "Просто описание",
-    "price": "Бесплатно",
-    "features": "\"Лягушатник\"",
-    "image_url": "https://i.imgur.com/xBgRpcI.png"
+    "image_url": "https://res.cloudinary.com/dwhb1qzhw/image/upload/e_upscale/e_enhance/q_auto:good/f_webp/%D0%BF%D0%B0%D0%BD%D1%82%D0%BE%D0%BD_cunxrq"
   }
 ]
