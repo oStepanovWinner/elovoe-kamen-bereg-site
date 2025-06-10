@@ -32,8 +32,8 @@
     "platform": "Яндекс",
     "rating": "3",
     "date": "Август 2024",
-    "review": "не ок",
-    "photo_url": "https://res.cloudinary.com/demo/image/upload/sample.jpg"
+    "review": "норм",
+    "photo_url": ""
   },
   {
     "id": "5",
@@ -60,7 +60,7 @@
     "rating": "5",
     "date": "Сентябрь 2024",
     "review": "Приехали компанией на выходные. Отличная баня, вкусное барбекю, чистое озеро. Персонал очень дружелюбный и отзывчивый. Обязательно вернемся!",
-    "photo_url": "https://res.cloudinary.com/demo/image/upload/park.jpg"
+    "photo_url": ""
   },
   {
     "id": "8",
@@ -68,7 +68,7 @@
     "platform": "Яндекс",
     "rating": "3",
     "date": "Август 2024",
-    "review": "не ок",
+    "review": "норм",
     "photo_url": "https://res.cloudinary.com/demo/image/upload/sample.jpg"
   }
 ]

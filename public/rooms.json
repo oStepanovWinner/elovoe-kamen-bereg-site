@@ -42,7 +42,7 @@
     "capacity": "4",
     "description": "Двухкомнатные апартаменты с двумя двухспальными кроватями. Душевая кабина, санузел. Кухня оборудована электроплитой, холодильником, чайником, столовыми приборами и посудой.",
     "features": "Две двухспальные кровати, Душевая кабина, Санузел, Электроплита, Холодильник, Чайник, Столовые приборами, Посуда",
-    "image_url": "https://res.cloudinary.com/demo/image/upload/park.jpg"
+    "image_url": "https://res.cloudinary.com/demo/image/upload/park.jpg;https://i.imgur.com/xBgRpcI.png;https://i.imgur.com/xBgRpcI.png;https://i.imgur.com/xBgRpcI.png"
   },
   {
     "id": "6",
