@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 const FloatingNavButton = () => {
   const [currentSection, setCurrentSection] = useState(0);
   const [isGreen, setIsGreen] = useState(true);
+  const [buttonStyle, setButtonStyle] = useState<{ position: 'fixed' | 'absolute', bottom: number }>({ position: 'fixed', bottom: 32 });
 
   const sections = [
     { id: 'hero', name: 'Главная' },
@@ -44,9 +45,36 @@ const FloatingNavButton = () => {
           }
         }
       });
+
+      // Проверка пересечения с футером
+      const footer = document.querySelector('footer');
+      if (footer) {
+        const footerRect = footer.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        const buttonHeight = 64;
+        const margin = 24; // px отступ от футера
+        if (footerRect.top < windowHeight - buttonHeight - margin) {
+          // Футер виден — кнопка absolute над футером
+          const footerTop = window.scrollY + footerRect.top;
+          setButtonStyle({
+            position: 'absolute',
+            bottom: windowHeight + window.scrollY - footerTop + margin
+          });
+        } else {
+          // Кнопка фиксирована внизу
+          setButtonStyle({ position: 'fixed', bottom: 32 });
+        }
+      } else {
+        setButtonStyle({ position: 'fixed', bottom: 32 });
+      }
     };
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleScroll);
+    handleScroll();
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
   }, []);
 
   // Смена цвета при каждом прыжке
@@ -70,7 +98,14 @@ const FloatingNavButton = () => {
   return (
     <button
       onClick={scrollToNextSection}
-      className={`fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50 font-medium transition-all duration-300 hover:scale-110`}
+      style={{
+        position: buttonStyle.position,
+        left: '50%',
+        transform: 'translateX(-50%)',
+        bottom: buttonStyle.bottom,
+        zIndex: 50
+      }}
+      className={`font-medium transition-all duration-300 hover:scale-110`}
     >
       <div className={`flex flex-col items-center space-y-1 animate-bounce`}>
         <span className={`text-sm ${textColor}`}>Прокрутить вниз</span>

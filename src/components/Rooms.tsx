@@ -253,7 +253,6 @@ const Rooms = () => {
           room={selectedRoom}
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
-          onBook={handleBookRoom}
           images={selectedRoom.images}
         />
       )}
